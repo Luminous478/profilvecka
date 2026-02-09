@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudieKompass</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Profilvecka · Innovationscase</p>
+        <h1>StudieKompass</h1>
+        <p>
+          Planera skolarbetet smartare, prioritera rätt och få AI-stöd för att nå
+          gymnasieexamen steg för steg.
+        </p>
+        <button id="focusBtn" class="btn-primary">Föreslå viktigaste uppgift</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>Lägg till uppgift</h2>
+        <form id="taskForm" class="task-form">
+          <label>
+            Kurs
+            <input id="courseInput" type="text" placeholder="t.ex. Matematik 2" required />
+          </label>
+          <label>
+            Uppgift
+            <input id="taskInput" type="text" placeholder="t.ex. Kapitelprov" required />
+          </label>
+          <label>
+            Deadline
+            <input id="deadlineInput" type="date" required />
+          </label>
+          <label>
+            Viktighet (1–5)
+            <input id="importanceInput" type="number" min="1" max="5" value="3" required />
+          </label>
+          <button type="submit" class="btn-primary">Lägg till</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Dina uppgifter</h2>
+        <p class="hint">Tips: klicka på en uppgift för att markera den som klar.</p>
+        <ul id="taskList" class="task-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>AI-stöd: Dela upp arbetet</h2>
+        <p id="aiAdvice" class="advice">
+          Lägg in några uppgifter och tryck på knappen högst upp för att få en plan.
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

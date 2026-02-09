@@ -1,0 +1,169 @@
+:root {
+  color-scheme: light;
+  --bg: #f3f4f8;
+  --card: #ffffff;
+  --primary: #5b5bf7;
+  --primary-dark: #4545d1;
+  --text: #1f2333;
+  --muted: #68708a;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.hero {
+  background: linear-gradient(120deg, #4f46e5, #7c3aed);
+  color: #fff;
+  padding: 3rem 1.2rem;
+}
+
+.hero__content {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.hero p {
+  max-width: 60ch;
+}
+
+.layout {
+  max-width: 980px;
+  margin: -2rem auto 2rem;
+  padding: 0 1rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+}
+
+.task-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid #d5d9e6;
+  font: inherit;
+}
+
+.btn-primary {
+  margin-top: 0.4rem;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.65rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.hint {
+  color: var(--muted);
+  margin-top: 0;
+  font-size: 0.9rem;
+}
+
+.task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.task-item {
+  border: 1px solid #dbe0ef;
+  border-radius: 12px;
+  padding: 0.7rem;
+  cursor: pointer;
+}
+
+.task-item.done {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #14532d;
+  text-decoration: line-through;
+}
+
+.badges {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.badge.urgent {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+.advice {
+  margin: 0;
+  padding: 0.8rem;
+  border-radius: 10px;
+  background: #eef9ff;
+  border-left: 4px solid #0ea5e9;
+}
+
+.roles ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  padding: 1rem;
+}
