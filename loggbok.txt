@@ -1,0 +1,9 @@
+Roles:
+ Luminous: frontend
+ LB: backend
+
+Mål:
+Gör en hemsida som hjälper med struktur och kontroll av skolarbete.
+
+TisdagMöte:
+- Fördela dagens uppgifter:
