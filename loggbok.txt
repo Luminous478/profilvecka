@@ -5,5 +5,13 @@ Roles:
 Mål:
 Gör en hemsida som hjälper med struktur och kontroll av skolarbete.
 
+TO DO:
+- Lägg AI som tipsar om vad att göra: t.ex. ge en lista: "Läsa igenom", "sammanfatta", ""....
+- Sortera uppgifter efter vikt, datum, klar, eller annat
+
+
 TisdagMöte:
 - Fördela dagens uppgifter:
+LB- Börja lägga en AI asistent med Gemini API.
+-- Bestäm vilken info och i vilken format (även om det finns knappar eller andra saker, checkbox, m.m.).
+-- tänk om det behövs mer information från användaren, elle rom AI:n får hitta på saker själv.
