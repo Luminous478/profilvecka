@@ -3,6 +3,13 @@ const taskList = document.getElementById("taskList");
 const aiAdvice = document.getElementById("aiAdvice");
 const focusBtn = document.getElementById("focusBtn");
 
+// REPLACE THIS WITH YOUR ACTUAL API KEY
+const API_KEY = localStorage.getItem("apiKey");
+if(API_KEY==null){
+  alert("This aint gonna work")
+};
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+
 const tasks = [];
 
 function daysLeft(deadline) {
@@ -20,7 +27,6 @@ function getPriorityScore(task) {
 
 function renderTasks() {
   taskList.innerHTML = "";
-
   if (!tasks.length) {
     taskList.innerHTML = "<li>Inga uppgifter än – börja med att lägga till en.</li>";
     return;
@@ -29,7 +35,7 @@ function renderTasks() {
   tasks
     .slice()
     .sort((a, b) => getPriorityScore(b) - getPriorityScore(a))
-    .forEach((task) => {
+    .forEach((task, index) => {
       const li = document.createElement("li");
       li.className = `task-item ${task.done ? "done" : ""}`;
       li.innerHTML = `
@@ -39,36 +45,62 @@ function renderTasks() {
           <span class="badge ${daysLeft(task.deadline) <= 3 ? "urgent" : ""}">Deadline om ${daysLeft(task.deadline)} dagar</span>
         </div>
       `;
-
       li.addEventListener("click", () => {
         task.done = !task.done;
         renderTasks();
       });
-
       taskList.appendChild(li);
     });
 }
 
-function createStudyPlan(task) {
-  const deadlineInDays = daysLeft(task.deadline);
+// THE AI THINKING FUNCTION
+async function getAIPlan(task) {
+  aiAdvice.textContent = "AI tänker ut en plan... 🧠";
+  
+  const prompt = `Du är en studiecoach. Jag har en skoluppgift: 
+    Kurs: ${task.course}
+    Uppgift: ${task.title}
+    Deadline: Om ${daysLeft(task.deadline)} dagar.
+    Viktighet: ${task.importance} av 5.
+    
+    Ge mig en konkret, kortfattad (max 3 meningar) och peppande plan på svenska för hur jag ska dela upp arbetet för att bli klar i tid utan stress.`;
 
-  if (deadlineInDays <= 1) {
-    return `Börja nu med ${task.title}. Gör en 45-minuters sprint, lämna in en första version idag och förbättra efter feedback.`;
-  }
-
-  if (deadlineInDays <= 4) {
-    return `Fokusera på ${task.title}. Dela upp i tre block: planera (20 min), producera (2 pass), repetera/korrekturläs (1 pass).`;
-  }
-
-  return `Bra framförhållning! Lägg ${task.title} i en veckoplan med 25 min per dag så blir arbetet jämnt och mindre stressigt.`;
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+  
+      const data = await response.json();
+  
+      // Check if the API returned an error message
+      if (data.error) {
+          console.error("API Error Detail:", data.error.message);
+          return `Ett fel uppstod: ${data.error.message}`;
+      }
+  
+      // Check if candidates exists (this fixes your specific error)
+      if (data.candidates && data.candidates[0]) {
+          return data.candidates[0].content.parts[0].text;
+      } else {
+          console.warn("Oväntat svar från AI:", data);
+          return "AI:n kunde inte generera ett svar just nu. Försök igen!";
+      }
+  
+    } catch (error) {
+      console.error("Nätverksfel:", error);
+      return "Kunde inte ansluta till AI-tjänsten. Kontrollera din internetanslutning.";
+    }
 }
 
-function updateAdvice() {
+async function updateAdvice() {
   const activeTasks = tasks.filter((task) => !task.done);
 
   if (!activeTasks.length) {
-    aiAdvice.textContent =
-      "Alla uppgifter verkar klara. Lägg till nya mål för veckan för att behålla rytmen!";
+    aiAdvice.textContent = "Alla uppgifter verkar klara. Bra jobbat!";
     return;
   }
 
@@ -76,12 +108,12 @@ function updateAdvice() {
     .slice()
     .sort((a, b) => getPriorityScore(b) - getPriorityScore(a))[0];
 
-  aiAdvice.textContent = `Prioritera ${topTask.course} – ${topTask.title}. ${createStudyPlan(topTask)}`;
+  const plan = await getAIPlan(topTask);
+  aiAdvice.textContent = plan;
 }
 
 taskForm.addEventListener("submit", (event) => {
   event.preventDefault();
-
   const task = {
     course: document.getElementById("courseInput").value.trim(),
     title: document.getElementById("taskInput").value.trim(),
@@ -93,11 +125,8 @@ taskForm.addEventListener("submit", (event) => {
   tasks.push(task);
   taskForm.reset();
   document.getElementById("importanceInput").value = 3;
-
   renderTasks();
-  updateAdvice();
 });
 
 focusBtn.addEventListener("click", updateAdvice);
-
 renderTasks();
